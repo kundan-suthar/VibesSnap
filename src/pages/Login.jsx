@@ -28,14 +28,6 @@ const Login = () => {
 
     }
   }
-  const logOut = async () => {
-    try {
-      await signOut(auth)
-    } catch (error) {
-      console.log(error);
-
-    }
-  }
   return (
     <div className='h-screen'>
       <div className="grid grid-cols-3  overflow-x-scroll gap-4">
