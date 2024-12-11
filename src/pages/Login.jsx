@@ -3,9 +3,15 @@ import { auth, googleProvider } from '../config/firebase'
 import { createUserWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
 import { FcGoogle } from "react-icons/fc";
 import { Link, Navigate, useNavigate } from "react-router";
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuth } from '../features/auth/authSlice';
 const Login = () => {
   const [userEmail, setUserEmail] = useState('')
   const [password, setPassword] = useState('')
+  const dispatch = useDispatch();
+  const authData = useSelector(state => state.authData)
+  console.log(authData);
+
   const navigate = useNavigate()
   console.log(auth?.currentUser?.email);
   const handleSubmit = async (e) => {
@@ -22,7 +28,19 @@ const Login = () => {
 
     try {
       await signInWithPopup(auth, googleProvider)
+      let currentUser = auth.currentUser
+      console.log(currentUser);
+
+      //dispatch(setAuth(currentUser))
       navigate('/')
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+  const logOut = async () => {
+    try {
+      await signOut(auth)
     } catch (error) {
       console.log(error);
 
@@ -87,7 +105,7 @@ const Login = () => {
           <Link to='register' className='font-Karla text-xl font-semibold'>Register</Link>
         </div>
       </div>
-      {/* <button className='m-3 p-3  bg-yellow-300 text-black' onClick={logOut}> Logout</button> */}
+      <button className='m-3 p-3  bg-yellow-300 text-black' onClick={logOut}> Logout</button>
     </div>
   )
 }
